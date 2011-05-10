@@ -43,6 +43,16 @@ class _CkOStream {
       return *this;
     }
 
+    _CkOStream& flush(void) {
+      if(_isErr)
+        CkError("%s", _obuf);
+      else
+        CkPrintf("%s", _obuf);
+      _obuf[0] = '\0';
+      _actlen=1;
+      return *this;
+    }
+
     _CkOStream& operator << (_CkOStream& (*f)(_CkOStream &)) {
       return f(*this);
     }
@@ -78,6 +88,7 @@ class _CkOStream {
 };
 
 static inline _CkOStream& endl(_CkOStream& s)  { return s.endl(); }
+static inline _CkOStream& flush(_CkOStream& s)  { return s.flush(); }
 
 class _CkOutStream : public _CkOStream {
   public:

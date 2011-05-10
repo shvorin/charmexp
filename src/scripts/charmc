@@ -621,7 +621,7 @@ do
 		SKIPLINK="yes"
 		OPTS="$OPTS $arg"
 		;;
-	"-M")
+	"-M"|"-MM")
 		SKIPLINK="yes"
 		OPTS="$OPTS $arg"
 		GENDEPENDS="yes"
@@ -630,6 +630,13 @@ do
 		OPTS="$OPTS $arg"
         COUNTTOKENS="yes"
         ;;
+	"-MG"|"-MP"|"-MD"|"-MMD")
+		OPTS="$OPTS $arg"
+		;;
+	"-MF"|"-MT"|"-MQ")
+		OPTS="$OPTS $arg $1"
+		shift
+		;;
 	"-default-to-aout")
 		if [ "$EXPLICIT_OBJECT $EXPLICIT_COMPILATION" = "no no" ]
 		then
@@ -737,6 +744,10 @@ do
 	
 	"-pg"|"-g"|-W*|-O*)
 		OPTS="$OPTS $arg"
+		;;
+
+	-Wl*)
+		OPTS_LDXX="$OPTS_LDXX $arg"
 		;;
 
 	"-fmoddir")

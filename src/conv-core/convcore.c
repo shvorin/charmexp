@@ -230,6 +230,9 @@ void  LrtsFree(void*);
 CpvStaticDeclare(int, cmiMyPeIdle);
 int CmiIsMyNodeIdle();
 
+/* plain C wrapper for abi::__cxa_demangle */
+char *cxa_demangle(const char *mangled_name, char *output_buffer, size_t *length, int *status);
+
 /*****************************************************************************
  *
  * Command-Line Argument (CLA) parsing routines.
@@ -563,6 +566,8 @@ static const char* _implGetBacktraceSys(const char *name) {
 /** Print out the names of these function pointers. */
 void CmiBacktracePrint(void **retPtrs,int nLevels) {
   if (nLevels>0) {
+    char *dmgl_buffer = NULL;
+    size_t dmgl_len = 0;
     int i;
     char **names=CmiBacktraceLookup(retPtrs,nLevels);
     if (names==NULL) return;
@@ -570,18 +575,35 @@ void CmiBacktracePrint(void **retPtrs,int nLevels) {
     for (i=0;i<nLevels;i++) {
       if (names[i] == NULL) continue;
       {
-      const char *trimmed=_implTrimParenthesis(names[i], 0);
-      const char *print=trimmed;
-      const char *sys=_implGetBacktraceSys(print);
-      if (sys) {
-          CmiPrintf("  [%d] Charm++ Runtime: %s (%s)\n",i,sys,print);
+        const char *trimmed=_implTrimParenthesis(names[i], 0);
+        const char *print=trimmed;
+        const char *sys=_implGetBacktraceSys(print);
+        char *funcname = /* const violation */(char*)print, *plusSign = funcname;
+        while (*plusSign != 0) {
+          if (*plusSign == '+') {
+            *plusSign = '\0';
+            ++plusSign;
+            break;
+          }
+          ++plusSign;
+        }
+        int status;
+        char *dmgl_result = cxa_demangle(funcname, dmgl_buffer, &dmgl_len, &status);
+        if(dmgl_result)
+          dmgl_buffer = dmgl_result;
+        if(0 != status)
+          dmgl_result = funcname; /* fall back without demangling */
+        if (sys) {
+          CmiPrintf("  [%d] Charm++ Runtime: %s (%s%s%s)\n",i,sys,dmgl_result,*plusSign?"+":"",plusSign);
           break; /*Stop when we hit Charm++ runtime.*/
-      } else {
-          CmiPrintf("  [%d:%d] %s\n",CmiMyPe(),i,print);
+        } else {
+          CmiPrintf("  [%d:%d] %s%s%s\n",CmiMyPe(),i,dmgl_result,*plusSign?"+":"",plusSign);
+        }
       }
-     }
     }
     free(names);
+    if(dmgl_buffer)
+      free(dmgl_buffer);
   }
 }
 

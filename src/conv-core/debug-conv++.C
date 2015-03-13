@@ -1,3 +1,4 @@
+#include <cxxabi.h>
 
 #include "converse.h"
 #include "debug-conv++.h"
@@ -30,4 +31,10 @@ void CpdListAccessor::beginItem(PUP::er &p,int itemNo)
   CpdListBeginItem_impl(p,itemNo);
 }
 
-
+extern "C" {
+  /* plain C wrapper for abi::__cxa_demangle */
+  char *cxa_demangle(const char *mangled_name, char *output_buffer, size_t *length, int *status)
+  {
+    return abi::__cxa_demangle(mangled_name, output_buffer, length, status);
+  }
+}

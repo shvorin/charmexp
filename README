@@ -5,6 +5,12 @@
 INTRODUCTION
 ============
 
+Charmexp is a fork of Charm++. It contains a branch named charmexp with a number
+of changes against charm-6.6.1 branch including fixup for GNU Autotools and
+backtrace demangling. This software includes code developed by the Parallel
+Programming Laboratory in the Department of Computer Science at the University
+of Illinois at Urbana-Champaign.
+
 Charm++ is a message-passing parallel language and runtime system.
 It is implemented as a set of libraries for C++, is efficient,
 and is portable to a wide variety of parallel machines.
@@ -18,6 +24,13 @@ You can use anonymous Git access to obtain the latest Charm++ source
 code, as follows:
 
     git clone http://charm.cs.illinois.edu/gerrit/charm
+
+In order to get charmexp branch do the following:
+
+    cd charm
+    git remote add github https://github.com/shvorin/charmexp
+    git fetch github
+    git checkout charmexp
 
 
 PICKING A VERSION
@@ -375,4 +388,4 @@ Sameer Paranjpye, Milind Bhandarkar, Robert Brunner and Jayant Desouza.
 Current developers include Terry Wilmarth, Gengbin Zheng, Orion Lawlor, 
 Karthik Mahesh, and Neelam Saboo.
 
-
+Charmexp fork was started by Artem Shvorin <art@shvorin.net>.

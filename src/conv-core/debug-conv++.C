@@ -1,3 +1,11 @@
+/*
+Copyright (C) University of Illinois, 1989-2013
+Artem Shvorin art@shvorin.net, 2015
+
+This software is derivative work from debug-conv++.C developed by the Parallel Programming Laboratory
+in the Department of Computer Science at the University of Illinois at Urbana-Champaign.
+*/
+
 #include <cxxabi.h>
 
 #include "converse.h"

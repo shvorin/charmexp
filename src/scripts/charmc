@@ -2,10 +2,14 @@
 ##############################################################################
 # charmc: Compiler for Converse/Charm/Charm++ programs
 #
-# Converted to Bourne Shell by Orion Sky Lawlor, 10/21/1999
+# Copyright (C) Converted to Bourne Shell by Orion Sky Lawlor, 10/21/1999
 #
 # Initialize the main controlling variables, setup error handler
 # ALL variables used by this script should be initialized here.
+#
+# Copyright (C) Artem Shvorin art@shvorin.net, 2015
+# This software is derivative work from Charmc developed by the Parallel Programming Laboratory
+# in the Department of Computer Science at the University of Illinois at Urbana-Champaign.
 #
 ##############################################################################
 
